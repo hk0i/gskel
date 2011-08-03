@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<skel>
+    <info>
+        <author>Gregory McQuillan</author>
+        <name>C++ Command Line Interface Application</name>
+    </info>
+
+    <filelist>
+        <file path="main.cpp" />
+    </filelist>
+</skel>
