@@ -3,7 +3,7 @@
   <info>
     <name>sample file</name>
     <author>sample author</author>
-    <alias>sam/ple</alias>
+    <alias>samp</alias>
   </info>
   <filelist>
     <file name="main.cpp"/>
