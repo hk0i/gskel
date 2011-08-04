@@ -6,6 +6,6 @@
     </info>
 
     <filelist>
-        <file path="main.cpp" />
+        <file name="main.cpp" />
     </filelist>
 </skel>

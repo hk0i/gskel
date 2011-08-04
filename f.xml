@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<skel>
+  <info>
+    <name>sample file</name>
+    <author>sample author</author>
+  </info>
+  <filelist>
+    <file name="main.cpp"/>
+  </filelist>
+</skel>
