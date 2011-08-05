@@ -57,7 +57,7 @@ class Skel(object):
         else:
             self.log.error('File does not exist: ' + filename)
 
-    def getXml(self):
+    def toXml(self):
         """returns xml representation of the object"""
         #root skel node ###################################################
         skel = etree.Element('skel')
@@ -89,6 +89,10 @@ class Skel(object):
         )
 
         return xml
+
+    def getXml(self):
+        """wrapper function for getXml, returns object as xml"""
+        return self.toXml()
 
     def saveFile(self, filename):
         """Save file"""
