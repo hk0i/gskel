@@ -10,9 +10,18 @@ class Skel(object):
 
         self.name     = None
         self.author   = None
-        self.alias    = None
+        self.directive    = None
         self.language = None
         self.filelist = list()
+
+        #these nodes all become attributes of the Skel class
+        #this list defines the attribute : xpath to node text data
+        self.infoNodes = [
+            {'name'      : '/skel/info/name' },
+            {'author'    : '/skel/info/author'},
+            {'language'  : '/skel/info/language'},
+            {'directive' : '/skel/info/directive'}
+        ]
 
     def addFile(self, filename):
         """adds a file to the filelist"""
@@ -29,17 +38,12 @@ class Skel(object):
             tree = etree.parse(filename)
             skel = tree.getroot()
 
-            name = tree.xpath('/skel/info/name')
-            self.name = name[0].text
-
-            author = tree.xpath('/skel/info/author')
-            self.author = author[0].text
-
-            alias = tree.xpath('/skel/info/alias')
-            self.alias = alias[0].text
-
-            language = tree.xpath('/skel/info/language')
-            self.language = language[0].text
+            for node in self.infoNodes:
+                keys = node.keys()
+                attrName = keys[0]
+                attrPath = node[attrName]
+                nodeData = tree.xpath(attrPath)
+                self.__dict__[attrName] = nodeData[0].text
 
             #get file list
             filelist = tree.xpath('/skel/filelist/file')
@@ -59,14 +63,11 @@ class Skel(object):
         skel.append(info)
 
         #info data ########################################################
-        name = etree.SubElement(info, 'name')
-        name.text = self.name
-        author = etree.SubElement(info, 'author')
-        author.text = self.author
-        alias = etree.SubElement(info, 'alias')
-        alias.text = self.alias
-        language = etree.SubElement(info, 'language')
-        language.text = self.language
+        for node in self.infoNodes:
+            keys = node.keys()
+            attrName = keys[0]
+            xmlNode = etree.SubElement(info, attrName)
+            xmlNode.text = self.__dict__[attrName]
 
         #filelist #########################################################
         filelist = etree.SubElement(skel, 'filelist')
@@ -103,7 +104,7 @@ if __name__ == "__main__":
     ts = Skel()
     ts.name = 'sample file'
     ts.author = 'sample author'
-    ts.alias  = 'samp'
+    ts.directive  = 'samp'
     ts.language = 'C++'
     ts.addFile('main.cpp')
     ts.addFile('this should not appear')
