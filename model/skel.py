@@ -45,7 +45,8 @@ class Skel(object):
                 attrName = keys[0]
                 attrPath = node[attrName]
                 nodeData = tree.xpath(attrPath)
-                self.__dict__[attrName] = nodeData[0].text
+                if nodeData:
+                    self.__dict__[attrName] = nodeData[0].text
 
             #get file list
             filelist = tree.xpath('/skel/filelist/file')
