@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<languages>
+    <lang>
+        <name>C</name>
+        <alias>c</alias>
+    </lang>
+    <lang>
+        <name>C++</name>
+        <alias>cpp</alias>
+    </lang>
+    <lang>
+        <name>Java</name>
+        <alias>java</alias>
+    </lang>
+</languages>
