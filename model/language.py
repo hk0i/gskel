@@ -15,6 +15,7 @@ class Language(object):
 
     def addDirective(self, directive, skelfile):
         """adds a directive to the language"""
+        directive = self.alias + '/' + directive
         self.directives.append({directive : skelfile})
 
     def toXml(self):
@@ -52,11 +53,25 @@ class Languages(object):
         for lang in self.languages:
             print lang.toXml()
 
+    def lang(self, search):
+        """
+        returns the Language object with name or alias `search`.
+        returns None if not in self.languages
+        """
+        for lang in self.languages:
+            if lang.name == search or lang.alias == search:
+                return lang
+        return None
+
 if __name__ == '__main__':
     #test Language obj
     lang = Language(name='python', alias='py')
     print lang.name, lang.alias
+    lang.addDirective('proj', '/create/project.xml')
+    print lang.directives
 
     l = Languages('skel/language.xml')
+    l.lang('C').addDirective('test','test.xml')
+    l.lang('cpp').addDirective('testcpp', 'testcpp.xml')
     for lang in l.languages:
-        print lang.name, lang.alias
+        print lang.name, lang.alias, lang.directives
