@@ -1,4 +1,5 @@
 from lxml import etree
+from logger import Logger
 import os
 
 class Skel(object):
@@ -95,6 +96,10 @@ class Skel(object):
         f.close()
 
 if __name__ == "__main__":
+    log = Logger()
+    log.notice('Running test cases for Skel...')
+
+    log.notice('Creating test object...')
     ts = Skel()
     ts.name = 'sample file'
     ts.author = 'sample author'
@@ -103,12 +108,15 @@ if __name__ == "__main__":
     ts.addFile('main.cpp')
     ts.addFile('this should not appear')
     ts.removeFile('this should not appear')
+    log.notice('Writing test object to file f.xml...')
     ts.saveFile('f.xml')
 
+    log.notice('Loading test file...')
     tl = Skel()
     tl.loadFile('skel/cpp/cli/skel.xml')
     print tl.getXml()
 
+    log.notice('Loading f.xml')
     tl2 = Skel()
     tl2.loadFile('f.xml')
     print tl2.getXml()
