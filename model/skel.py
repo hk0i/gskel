@@ -19,6 +19,12 @@ class Skel(object):
             {'directive' : '/skel/info/directive'}
         ]
 
+        #initialize the attributes to None
+        for node in self.infoNodes:
+            keys = node.keys()
+            attrName = keys[0]
+            self.__dict__[attrName] = None
+
     def addFile(self, filename):
         """adds a file to the filelist"""
         self.filelist.append(filename)
