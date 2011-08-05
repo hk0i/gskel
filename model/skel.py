@@ -10,6 +10,7 @@ class Skel(object):
         self.name     = None
         self.author   = None
         self.alias    = None
+        self.language = None
         self.filelist = list()
 
     def addFile(self, filename):
@@ -36,6 +37,9 @@ class Skel(object):
             alias = tree.xpath('/skel/info/alias')
             self.alias = alias[0].text
 
+            language = tree.xpath('/skel/info/language')
+            self.language = language[0].text
+
             #get file list
             filelist = tree.xpath('/skel/filelist/file')
             for fil in filelist:
@@ -60,6 +64,8 @@ class Skel(object):
         author.text = self.author
         alias = etree.SubElement(info, 'alias')
         alias.text = self.alias
+        language = etree.SubElement(info, 'language')
+        language.text = self.language
 
         #filelist #########################################################
         filelist = etree.SubElement(skel, 'filelist')
@@ -93,6 +99,7 @@ if __name__ == "__main__":
     ts.name = 'sample file'
     ts.author = 'sample author'
     ts.alias  = 'samp'
+    ts.language = 'C++'
     ts.addFile('main.cpp')
     ts.addFile('this should not appear')
     ts.removeFile('this should not appear')

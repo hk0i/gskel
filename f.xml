@@ -4,6 +4,7 @@
     <name>sample file</name>
     <author>sample author</author>
     <alias>samp</alias>
+    <language>C++</language>
   </info>
   <filelist>
     <file name="main.cpp"/>

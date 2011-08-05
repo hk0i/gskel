@@ -3,7 +3,8 @@
     <info>
         <author>Gregory McQuillan</author>
         <name>C++ Command Line Interface Application</name>
-        <alias>cppcli</alias>
+        <language>C++</language>
+        <alias>cpp/cli</alias>
     </info>
 
     <filelist>
