@@ -8,10 +8,6 @@ class Skel(object):
         super(Skel, self).__init__()
         self.filename = filename
 
-        self.name     = None
-        self.author   = None
-        self.directive    = None
-        self.language = None
         self.filelist = list()
 
         #these nodes all become attributes of the Skel class
