@@ -9,6 +9,7 @@ class Skel(object):
         self.filename = filename
 
         self.filelist = list()
+        self.log      = Logger()
 
         #these nodes all become attributes of the Skel class
         #this list defines the attribute : xpath to node text data
@@ -54,7 +55,7 @@ class Skel(object):
                 self.filelist.append(fil.get('name'))
 
         else:
-            print 'File does not exist: ' + filename
+            self.log.error('File does not exist: ' + filename)
 
     def getXml(self):
         """returns xml representation of the object"""
@@ -105,6 +106,8 @@ if __name__ == "__main__":
 
     log.notice('Creating test object...')
     ts = Skel()
+    log.notice('Attempting to open a file that does not exist...')
+    ts.loadFile('this-does-not-exist.xml')
     ts.name = 'sample file'
     ts.author = 'sample author'
     ts.directive  = 'samp'
