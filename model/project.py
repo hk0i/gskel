@@ -1,7 +1,7 @@
 import os
 import shutil
 from skel import Skel
-from logger import Logger
+from logger import log
 
 class Project(object):
     """creates a project given a skeleton and a project name"""
@@ -10,10 +10,10 @@ class Project(object):
 
         self.project_name = name
         self.skel         = skel
-        self.log          = Logger()
 
     def createFiles(self, dest):
         """copies all files from the skeleton in the dest dir"""
+        #TODO: file renaming and replacing for classes, etc...
         if self.skel:
             for skelFile in self.skel.filelist:
                 if os.path.exists(skelFile):
@@ -24,12 +24,12 @@ class Project(object):
                         os.makedirs(destPath)
                     if not os.path.exists(destFile):
                         shutil.copyfile(skelFile, destFile)
-                        self.log.notice(
+                        log.notice(
                             'Creating file: '
                             + destFile
                         )
                     else:
-                        self.log.warning(
+                        log.warning(
                             'File exists, skipping: '
                             + skelFile
                         )
