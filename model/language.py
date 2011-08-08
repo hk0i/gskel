@@ -20,6 +20,24 @@ class Language(object):
         directive = self.alias + '/' + directive
         self.directives.append({directive : skelfile})
 
+    def getDirective(self, directive):
+        """
+        checks to see if `directive` exists in language.
+        Returns False on failure.
+        Returns skel.xml file path if language has directive
+        """
+        search = self.alias + '/' + directive
+        if self.directives:
+            log.debug('Searching for directive: ' + search)
+            for d in self.directives:
+                dirname = d.keys()
+                dirname = dirname[0]
+                if dirname == search:
+                    return d[dirname]
+
+        log.debug('Directive `' + search + '` not found in ' + self.name)
+        return False
+
     def toXml(self):
         '''returns object as xml'''
         root = etree.Element('lang')
@@ -28,6 +46,10 @@ class Language(object):
 
         alias = lang.SubElement('alias')
         alias.text = self.alias
+
+    def __str__(self):
+        """to string method"""
+        return self.name
 
 class Languages(object):
     """stores a list of languages"""
@@ -101,3 +123,13 @@ if __name__ == '__main__':
     l.loadDirectives('skel')
     for lang in l.languages:
         print lang.name, lang.alias, lang.directives
+
+    log.notice(
+        'Checking for sample directive: proj/cli in cpp: '
+        + str(l.lang('cpp').getDirective('proj/cli'))
+    )
+
+    log.notice(
+        'Checking for non-existant directive: proj/main in cpp: '
+        + str(l.lang('cpp').getDirective('proj/main'))
+    )
