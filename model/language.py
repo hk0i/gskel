@@ -1,4 +1,5 @@
 from lxml import etree
+from logger import log
 import os
 
 class Language(object):

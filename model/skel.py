@@ -1,5 +1,5 @@
 from lxml import etree
-from logger import Logger
+from logger import log
 import os
 
 class Skel(object):
@@ -9,7 +9,6 @@ class Skel(object):
         self.filename = filename
 
         self.filelist = list()
-        self.log      = Logger()
 
         #these nodes all become attributes of the Skel class
         #this list defines the attribute : xpath to node text data
@@ -25,6 +24,9 @@ class Skel(object):
             keys = node.keys()
             attrName = keys[0]
             self.__dict__[attrName] = None
+
+        if filename:
+            self.loadFile(filename)
 
     def addFile(self, filename):
         """adds a file to the filelist"""
@@ -55,7 +57,7 @@ class Skel(object):
                 self.filelist.append(fil.get('name'))
 
         else:
-            self.log.error('File does not exist: ' + filename)
+            log.error('File does not exist: ' + filename)
 
     def toXml(self):
         """returns xml representation of the object"""
@@ -105,7 +107,6 @@ class Skel(object):
         f.close()
 
 if __name__ == "__main__":
-    log = Logger()
     log.notice('Running test cases for Skel...')
 
     log.notice('Creating test object...')

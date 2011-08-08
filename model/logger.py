@@ -1,6 +1,7 @@
 import sys
 import os
 import datetime
+import gskel
 
 class Logger(object):
     """logs to stdout and/or log files"""
@@ -58,6 +59,12 @@ class Logger(object):
         else:
             print msg
 
+    def debug(self, msg):
+        """prints a debug message only when debug mode is on"""
+        if gskel.debugModeSet:
+            msg = '[debug] ' + msg
+            self.cprint(msg, self.GREEN, True)
+
     def notice(self, msg):
         """docstring for notice"""
         msg = '[notice] ' + msg
@@ -73,6 +80,7 @@ class Logger(object):
         """prints an error message"""
         self.cprint(msg, self.RED, True)
 
+log = Logger()
 
 if __name__ == '__main__':
     l = Logger()
