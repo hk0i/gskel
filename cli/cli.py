@@ -1,8 +1,12 @@
 import argparse
-from model.logger import Logger
+import os
+
+from model.logger import log
 from model import gskel
 from model.directives import Directives
-from model.language import Language
+from model.language import Language, Languages
+from model.project import Project
+from model.skel import Skel
 
 #gskel cli - commandline interface for gskel
 
@@ -10,7 +14,6 @@ class CLIParser(object):
     """docstring for CLIParser"""
     def __init__(self):
         super(CLIParser, self).__init__()
-        self.log  = Logger()
         self.dirs = Directives()
 
     def parse(self):
@@ -35,8 +38,31 @@ class CLIParser(object):
             help='instruction to perform for specified language'
         )
 
+        parser.add_argument(
+            'outpath',
+            help='directory to output to',
+        )
+
         args = parser.parse_args()
+
+        #find languages and add args for each
+        #add an arg for each lang name, then pass the directive as an arg to it
+        langs = Languages(os.path.join('.', 'skel/language.xml'))
+        langs.loadDirectives(os.path.join('.', 'skel'))
+        if args.directive and args.outpath:
+            for lang in langs.languages:
+                log.debug('acquiring skel file for: ' + args.directive)
+                skelFile = langs.lang(args.lang).getDirective(args.directive)
+                log.debug('skel file found: ' + str(skelFile))
+                break
+
+            #copy files
+            if skelFile:
+                skeleton = Skel(skelFile)
+                project = Project(skel = skeleton)
+                project.createFiles(args.outpath)
+
         if args:
             if args.v == True:
                 gskel.debugModeSet = True
-            self.log.debug('args: ' + str(args))
+            log.debug('args: ' + str(args))
