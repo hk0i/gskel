@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<skel>
+    <info>
+        <author>Gregory McQuillan</author>
+        <name>Java class with main method</name>
+        <language>Java</language>
+        <directive>mc</directive>
+    </info>
+
+    <filelist>
+        <file name="CLASSNAME.java" />
+    </filelist>
+</skel>
