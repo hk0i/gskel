@@ -1,5 +1,6 @@
 from lxml import etree
 from logger import log
+from skel import Skel
 import os
 
 class Language(object):
@@ -49,6 +50,24 @@ class Languages(object):
                 alias = lang.findtext('alias')
                 self.languages.append(Language(name=name, alias=alias))
 
+    def loadDirectives(self, directory):
+        """loads directives recursively from a directory"""
+        for path, dirs, files in os.walk(directory):
+            if 'skel.xml' in files:
+                skelFile = os.path.join(path, 'skel.xml')
+                s = Skel(skelFile)
+
+                log.debug(
+                    'Loading directive: '
+                    + s.directive
+                    + ' into language '
+                    + s.language
+                )
+
+                lang = self.lang(s.language)
+                if lang:
+                    lang.addDirective(s.directive, skelFile)
+
     def toXml(self):
         """returns xml of languages"""
         for lang in self.languages:
@@ -74,5 +93,11 @@ if __name__ == '__main__':
     l = Languages('skel/language.xml')
     l.lang('C').addDirective('test','test.xml')
     l.lang('cpp').addDirective('testcpp', 'testcpp.xml')
+    for lang in l.languages:
+        print lang.name, lang.alias, lang.directives
+
+    #test load directives
+    log.notice('Attempting to load directives...')
+    l.loadDirectives('skel')
     for lang in l.languages:
         print lang.name, lang.alias, lang.directives
