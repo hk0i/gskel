@@ -61,7 +61,7 @@ class Logger(object):
 
     def debug(self, msg):
         """prints a debug message only when debug mode is on"""
-        if gskel.debugModeSet:
+        if gskel.config.debugModeSet:
             msg = '[debug] ' + msg
             self.cprint(msg, self.GREEN, True)
 

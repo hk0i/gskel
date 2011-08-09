@@ -59,7 +59,7 @@ class Skel(object):
                 for fil in filelist:
                     self.filelist.append(fil.get('name'))
             except:
-                log.error('Could not parse skeleton file: ' + filename)
+                log.warning('Could not parse skeleton file: ' + filename)
                 return False
 
         else:
