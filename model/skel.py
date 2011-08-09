@@ -19,6 +19,9 @@ class Skel(object):
             {'directive' : '/skel/info/directive'}
         ]
 
+        #list of optional parameters
+        self.params = list()
+
         #initialize the attributes to None
         for node in self.infoNodes:
             keys = node.keys()
@@ -58,8 +61,19 @@ class Skel(object):
                 filelist = tree.xpath('/skel/filelist/file')
                 for fil in filelist:
                     self.filelist.append(fil.get('name'))
-            except:
-                log.warning('Could not parse skeleton file: ' + filename)
+
+                #parameters
+                params = tree.xpath('/skel/params/param')
+                for param in params:
+                    self.params.append({param.get('name'): param.get('value')})
+
+            except Exception as ex:
+                log.warning(
+                    'Could not parse skeleton file: '
+                    + str(ex)
+                    + ' in file: '
+                    + filename
+                )
                 return False
 
         else:
@@ -82,6 +96,15 @@ class Skel(object):
             xmlNode = etree.SubElement(info, attrName)
             xmlNode.text = self.__dict__[attrName]
 
+        #parameters #######################################################
+        params = etree.SubElement(skel, 'params')
+
+        for param in self.params:
+            paramName = param.keys()[0]
+            xmlNode = etree.SubElement(params, 'param')
+            xmlNode.set('name', paramName)
+            xmlNode.set('value', param[paramName])
+
         #filelist #########################################################
         filelist = etree.SubElement(skel, 'filelist')
 
@@ -100,7 +123,7 @@ class Skel(object):
         return xml
 
     def getXml(self):
-        """wrapper function for getXml, returns object as xml"""
+        """wrapper function for toXml, returns object as xml"""
         return self.toXml()
 
     def saveFile(self, filename):
@@ -139,4 +162,8 @@ if __name__ == "__main__":
     tl2 = Skel()
     tl2.loadFile('f.xml')
     print tl2.getXml()
+
+    log.notice('loading test skel with replacement vars...')
+    tl3 = Skel('skel/java/main-class/skel.xml')
+    print tl3.getXml()
 

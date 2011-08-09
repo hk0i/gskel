@@ -7,6 +7,10 @@
         <directive>mc</directive>
     </info>
 
+    <params>
+        <param name="classname" value="%CLASSNAME%" />
+    </params>
+
     <filelist>
         <file name="CLASSNAME.java" />
     </filelist>

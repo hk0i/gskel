@@ -1,4 +1,4 @@
-public class CLASSNAME
+public class %CLASSNAME%
 {
     public static void main (String [] args)
     {
