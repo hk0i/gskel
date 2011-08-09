@@ -40,24 +40,29 @@ class Skel(object):
         """loads skeleton information from file"""
         if os.path.exists(filename):
             #try to load the file
-            tree = etree.parse(filename)
-            skel = tree.getroot()
+            try:
+                tree = etree.parse(filename)
+                skel = tree.getroot()
 
-            for node in self.infoNodes:
-                keys = node.keys()
-                attrName = keys[0]
-                attrPath = node[attrName]
-                nodeData = tree.xpath(attrPath)
-                if nodeData:
-                    self.__dict__[attrName] = nodeData[0].text
+                for node in self.infoNodes:
+                    keys = node.keys()
+                    attrName = keys[0]
+                    attrPath = node[attrName]
+                    nodeData = tree.xpath(attrPath)
+                    if nodeData:
+                        self.__dict__[attrName] = nodeData[0].text
 
-            #get file list
-            filelist = tree.xpath('/skel/filelist/file')
-            for fil in filelist:
-                self.filelist.append(fil.get('name'))
+                #get file list
+                filelist = tree.xpath('/skel/filelist/file')
+                for fil in filelist:
+                    self.filelist.append(fil.get('name'))
+            except:
+                log.error('Could not parse skeleton file: ' + filename)
+                return False
 
         else:
             log.error('File does not exist: ' + filename)
+            return False
 
     def toXml(self):
         """returns xml representation of the object"""

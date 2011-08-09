@@ -81,9 +81,9 @@ class Languages(object):
 
                 log.debug(
                     'Loading directive: '
-                    + s.directive
+                    + str(s.directive)
                     + ' into language '
-                    + s.language
+                    + str(s.language)
                 )
 
                 lang = self.lang(s.language)
