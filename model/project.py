@@ -62,17 +62,19 @@ class Project(object):
                         )
                         os.makedirs(destPath)
                     if not os.path.exists(destFile):
-                        log.notice(
-                            'Creating file: '
-                            + destFile
-                        )
                         shutil.copyfile(sourceFile, destFile)
                         renamed = self.repVars(
                             self.skel,
                             destFile
                         )
+                        nFile = destFile
                         if renamed:
                             shutil.move(destFile, renamed)
+                            nFile = renamed
+                        log.notice(
+                            'Creating file: '
+                            + nFile
+                        )
                     else:
                         log.warning(
                             'File exists, skipping: '
