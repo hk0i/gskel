@@ -1,0 +1,1 @@
+#include "%CLASSNAME%.h"

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<skel>
+    <info>
+        <author>Gregory McQuillan</author>
+        <name>C++ class with main method</name>
+        <language>C++</language>
+        <directive>class</directive>
+    </info>
+
+    <params>
+        <param name="classname" value="%CLASSNAME%" />
+    </params>
+
+    <filelist>
+        <file name="%CLASSNAME%.h" />
+        <file name="%CLASSNAME%.cpp" />
+    </filelist>
+</skel>
