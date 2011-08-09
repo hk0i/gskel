@@ -15,7 +15,7 @@ class Project(object):
 
     def repVars(self, skel, filename):
         """replaces variables in file filename according to skel object"""
-        if skel.hasParams():
+        if skel.hasParams() and self.params:
             log.debug(
                 'Attempting to make variable replacements in file: '
                 + filename

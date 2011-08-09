@@ -4,7 +4,6 @@ import sys
 
 from model.logger import log
 from model import gskel
-from model.directives import Directives
 from model.language import Language, Languages
 from model.project import Project
 from model.skel import Skel
@@ -15,7 +14,6 @@ class CLIParser(object):
     """docstring for CLIParser"""
     def __init__(self):
         super(CLIParser, self).__init__()
-        self.dirs = Directives()
 
     def parse(self):
         parser = argparse.ArgumentParser(prog='gSkel')
@@ -42,13 +40,15 @@ class CLIParser(object):
         parser.add_argument(
             'params',
             help='arguments for directive',
-            nargs='+'
+            nargs='*',
+            default=None
         )
 
         parser.add_argument(
             '-o',
             '--outpath',
             help='directory to output to',
+            default='.'
         )
 
         args = parser.parse_args()
@@ -73,5 +73,5 @@ class CLIParser(object):
 
         if args:
             if args.v == True:
-                gskel.debugModeSet = True
+                gskel.config.debugModeSet = True
             log.debug('args: ' + str(args))
