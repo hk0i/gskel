@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 
 from model.logger import log
 from model import gskel
@@ -47,8 +48,9 @@ class CLIParser(object):
 
         #find languages and add args for each
         #add an arg for each lang name, then pass the directive as an arg to it
-        langs = Languages(os.path.join('.', 'skel/language.xml'))
-        langs.loadDirectives(os.path.join('.', 'skel'))
+        langs = Languages(os.path.join(sys.path[0], 'skel/language.xml'))
+        langs.loadDirectives(os.path.join(sys.path[0], 'skel'))
+        skelFile = None
         if args.directive and args.outpath:
             for lang in langs.languages:
                 log.debug('acquiring skel file for: ' + args.directive)

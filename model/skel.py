@@ -39,6 +39,8 @@ class Skel(object):
     def loadFile(self, filename):
         """loads skeleton information from file"""
         if os.path.exists(filename):
+            log.debug('Skel::loadFile: loading file: ' + filename)
+            self.filename = filename
             #try to load the file
             try:
                 tree = etree.parse(filename)
