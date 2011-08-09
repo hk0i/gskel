@@ -12,6 +12,6 @@
     </params>
 
     <filelist>
-        <file name="CLASSNAME.java" />
+        <file name="%CLASSNAME%.java" />
     </filelist>
 </skel>

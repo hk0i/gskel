@@ -40,7 +40,14 @@ class CLIParser(object):
         )
 
         parser.add_argument(
-            'outpath',
+            'params',
+            help='arguments for directive',
+            nargs='+'
+        )
+
+        parser.add_argument(
+            '-o',
+            '--outpath',
             help='directory to output to',
         )
 
@@ -61,7 +68,7 @@ class CLIParser(object):
             #copy files
             if skelFile:
                 skeleton = Skel(skelFile)
-                project = Project(skel = skeleton)
+                project = Project(skel = skeleton, params = args.params)
                 project.createFiles(args.outpath)
 
         if args:

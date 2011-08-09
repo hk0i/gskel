@@ -39,6 +39,12 @@ class Skel(object):
         """removes a file from the filelist"""
         self.filelist.remove(filename)
 
+    def hasParams(self):
+        """returns True if this skeleton has extra parameters or not"""
+        if self.params:
+            return True
+        return False
+
     def loadFile(self, filename):
         """loads skeleton information from file"""
         if os.path.exists(filename):
