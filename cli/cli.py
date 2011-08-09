@@ -16,7 +16,7 @@ class CLIParser(object):
         super(CLIParser, self).__init__()
 
     def parse(self):
-        parser = argparse.ArgumentParser(prog='gSkel')
+        parser = argparse.ArgumentParser(prog='gskel')
         #add version
         parser.add_argument(
             '--version',
