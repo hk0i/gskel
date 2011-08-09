@@ -14,6 +14,6 @@ Dependencies
 ------------------------------------------------------------------------------
 GSkel dependencies:
 
-Python (Developed and tested on python 2.6.5)
-lxml - libxml python library
-argparse - command line parsing library for python
+- Python (Developed and tested on python 2.6.5)
+- lxml - libxml python library
+- argparse - command line parsing library for python
