@@ -1,6 +1,8 @@
 import os
 import shutil
 import gskel
+import sys
+
 from skel import Skel
 from logger import log
 
@@ -13,6 +15,13 @@ class Project(object):
         self.skel         = skel
         #argument *VALUES* given from cli as a list
         self.params       = params
+        if self.skel.params and not self.params:
+            log.error(
+                'Directive `'
+                + self.skel.directive
+                + '` requires arguments; exiting...'
+            )
+            sys.exit(1)
         #some default values
         self.constants = [
             {'APPNAME'    : self.project_name},
@@ -38,7 +47,30 @@ class Project(object):
         )
         return ret
 
-    def repVars(self, skel, filename):
+    def repVars(self, skel, string):
+        """replaces variables in file filename according to skel object"""
+        if skel.hasParams() and self.params:
+            log.debug(
+                'Attempting to make variable replacements.'
+            )
+            fContent = string
+            i = 0
+            for param in skel.params:
+                pVal = param.keys()[0]
+                pVal = param[pVal]
+                log.debug('param data: ' + pVal)
+                fContent = self.repWord(fContent, pVal, self.params[i])
+                i = i + 1
+
+            log.debug('replacing..')
+            for const in self.constants:
+                key = const.keys()[0]
+                rep= const[key]
+                fContent = self.repWord(fContent, key, rep)
+
+        return fContent
+
+    def repVarsFile(self, skel, filename):
         """replaces variables in file filename according to skel object"""
         if skel.hasParams() and self.params:
             log.debug(
@@ -49,25 +81,16 @@ class Project(object):
             fContent = f.read()
             fname = filename
             f.close()
-            i = 0
-            for param in skel.params:
-                pVal = param.keys()[0]
-                pVal = param[pVal]
-                log.debug('param data: ' + pVal)
-                fContent = self.repWord(fContent, pVal, self.params[i])
-                fname = self.repWord(fname, pVal, self.params[i])
-                i = i + 1
 
-            log.debug('replacing..')
-            for const in self.constants:
-                key = const.keys()[0]
-                rep= const[key]
-                fContent = self.repWord(fContent, key, rep)
+            #replace content
+            fContent = self.repVars(skel, fContent)
+            fname = self.repVars(skel, filename)
 
             f = open(filename, 'w')
             f.write(fContent)
             f.close()
             return fname
+
         return False
 
     def createFiles(self, dest):
@@ -95,7 +118,7 @@ class Project(object):
                         os.makedirs(destPath)
                     if not os.path.exists(destFile):
                         shutil.copyfile(sourceFile, destFile)
-                        renamed = self.repVars(
+                        renamed = self.repVarsFile(
                             self.skel,
                             destFile
                         )
@@ -104,7 +127,7 @@ class Project(object):
                             shutil.move(destFile, renamed)
                             nFile = renamed
                         log.notice(
-                            'Creating file: '
+                            'Created file: '
                             + nFile
                         )
                     else:
