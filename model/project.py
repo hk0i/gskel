@@ -22,6 +22,7 @@ class Project(object):
                 + '` requires arguments; exiting...'
             )
             sys.exit(1)
+
         #some default values
         self.constants = [
             {'APPNAME'    : self.project_name},
@@ -49,11 +50,12 @@ class Project(object):
 
     def repVars(self, skel, string):
         """replaces variables in file filename according to skel object"""
+
+        fContent = string
         if skel.hasParams() and self.params:
             log.debug(
                 'Attempting to make variable replacements.'
             )
-            fContent = string
             i = 0
             for param in skel.params:
                 pVal = param.keys()[0]
@@ -62,36 +64,33 @@ class Project(object):
                 fContent = self.repWord(fContent, pVal, self.params[i])
                 i = i + 1
 
-            log.debug('replacing..')
-            for const in self.constants:
-                key = const.keys()[0]
-                rep= const[key]
-                fContent = self.repWord(fContent, key, rep)
+        log.debug('Replacing constants..')
+        for const in self.constants:
+            key = const.keys()[0]
+            rep= const[key]
+            fContent = self.repWord(fContent, key, rep)
 
         return fContent
 
     def repVarsFile(self, skel, filename):
         """replaces variables in file filename according to skel object"""
-        if skel.hasParams() and self.params:
-            log.debug(
-                'Attempting to make variable replacements in file: '
-                + filename
-            )
-            f = open(filename, 'r')
-            fContent = f.read()
-            fname = filename
-            f.close()
+        log.debug(
+            'Attempting to make variable replacements in file: '
+            + filename
+        )
+        f = open(filename, 'r')
+        fContent = f.read()
+        fname = filename
+        f.close()
 
-            #replace content
-            fContent = self.repVars(skel, fContent)
-            fname = self.repVars(skel, filename)
+        #replace content
+        fContent = self.repVars(skel, fContent)
+        fname = self.repVars(skel, filename)
 
-            f = open(filename, 'w')
-            f.write(fContent)
-            f.close()
-            return fname
-
-        return False
+        f = open(filename, 'w')
+        f.write(fContent)
+        f.close()
+        return fname
 
     def createFiles(self, dest):
         """copies all files from the skeleton in the dest dir"""
@@ -123,7 +122,7 @@ class Project(object):
                             destFile
                         )
                         nFile = destFile
-                        if renamed:
+                        if renamed != destFile:
                             shutil.move(destFile, renamed)
                             nFile = renamed
                         log.notice(
@@ -136,11 +135,12 @@ class Project(object):
                             + skelFile
                         )
                 else:
-                    log.debug(
+                    log.error(
                         'Project::createFiles: could not copy file from '
                         + 'skeleton because it does not exist: '
                         + sourceFile
                     )
+                    sys.exit(1)
         else:
             log.debug('Project::createFiles: no skel file set, aborting...')
 
