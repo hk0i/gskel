@@ -27,11 +27,19 @@ class CLIParser(object):
 
         parser.add_argument(
             '-v',
+            '--verbose',
             action='store_true',
             help='verbose mode, show debug output'
         )
 
-        parser.add_argument('lang', help='language code: c, cpp, java')
+        parser.add_argument(
+            '-p',
+            '--project-name',
+            help='Name of the project',
+            default='Unnamed'
+        )
+
+        parser.add_argument('lang', help='language id: c, cpp, java')
         parser.add_argument(
             'directive',
             help='instruction to perform for specified language'
@@ -47,7 +55,7 @@ class CLIParser(object):
         parser.add_argument(
             '-o',
             '--outpath',
-            help='directory to output to',
+            help='directory to output to, defaults to current directory',
             default='.'
         )
 
@@ -73,6 +81,10 @@ class CLIParser(object):
             #copy files
             if skelFile:
                 skeleton = Skel(skelFile)
-                project = Project(skel = skeleton, params = args.params)
+                project = Project(
+                    name = args.project_name,
+                    skel = skeleton,
+                    params = args.params
+                )
                 project.createFiles(args.outpath)
 
