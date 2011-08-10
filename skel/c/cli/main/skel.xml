@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<skel>
+    <info>
+        <author>Gregory McQuillan</author>
+        <name>C command line interface code file with main function</name>
+        <language>C</language>
+        <directive>cli/main</directive>
+    </info>
+
+    <params />
+
+    <filelist>
+        <file name="main.c" />
+    </filelist>
+</skel>
