@@ -1,5 +1,6 @@
 import os
 import shutil
+import gskel
 from skel import Skel
 from logger import log
 
@@ -10,8 +11,32 @@ class Project(object):
 
         self.project_name = name
         self.skel         = skel
-        #argument values given from cli
+        #argument *VALUES* given from cli as a list
         self.params       = params
+        #some default values
+        self.constants = [
+            {'APPNAME'    : self.project_name},
+            {'AUTHOR'     : gskel.config.authorName},
+            {'AUTHOREMAIL': gskel.config.authorEmail}
+        ]
+
+    def repWord(self, string, word, rep):
+        replacement = str(rep)
+        search = '%' + word + '%'
+        log.debug(
+            'Replacing %s with %s'
+            % (word, replacement)
+        )
+        ret = string.replace(
+            search,
+            replacement
+        )
+        search = '$' + word + '$'
+        ret = ret.replace(
+            search,
+            replacement.upper()
+        )
+        return ret
 
     def repVars(self, skel, filename):
         """replaces variables in file filename according to skel object"""
@@ -28,9 +53,17 @@ class Project(object):
             for param in skel.params:
                 pVal = param.keys()[0]
                 pVal = param[pVal]
-                fContent = fContent.replace(pVal, self.params[i])
-                fname = fname.replace(pVal, self.params[i])
+                log.debug('param data: ' + pVal)
+                fContent = self.repWord(fContent, pVal, self.params[i])
+                fname = self.repWord(fname, pVal, self.params[i])
                 i = i + 1
+
+            log.debug('replacing..')
+            for const in self.constants:
+                key = const.keys()[0]
+                rep= const[key]
+                fContent = self.repWord(fContent, key, rep)
+
             f = open(filename, 'w')
             f.write(fContent)
             f.close()
@@ -39,7 +72,6 @@ class Project(object):
 
     def createFiles(self, dest):
         """copies all files from the skeleton in the dest dir"""
-        #TODO: file renaming and replacing for classes, etc...
         log.debug('Project::createFiles: creating files.')
         if self.skel:
             for skelFile in self.skel.filelist:

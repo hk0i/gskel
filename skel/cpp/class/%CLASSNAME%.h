@@ -1,5 +1,5 @@
-#ifndef _%CLASSNAME%_H
-#define _%CLASSNAME%_H
+#ifndef _$CLASSNAME$_H
+#define _$CLASSNAME$_H
 
 class %CLASSNAME%
 {

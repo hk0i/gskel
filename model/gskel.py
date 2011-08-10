@@ -14,6 +14,8 @@ class Config(object):
         super(Config, self).__init__()
 
         self.debugModeSet = False
+        self.authorName  = 'gskel'
+        self.authorEmail = 'nobody@localhost'
 
         self.config = ConfigParser.SafeConfigParser()
         configPath = os.path.join(HOME_PATH, '.gskel', 'config')
@@ -23,6 +25,17 @@ class Config(object):
     def loadConfig(self, configPath):
         """loads configuration into model from an existing config file"""
         self.config.readfp(open(configPath, 'r'))
-        self.debugModeSet = self.config.getboolean('debug', 'enabled')
+        if self.config.has_section('debug'):
+            self.debugModeSet = self.config.getboolean('debug', 'enabled')
+
+        #default author info
+        if self.config.has_section('author'):
+            self.authorName   = self.config.get('author', 'name', 'gskel')
+            self.authorEmail  = self.config.get(
+                'author',
+                'email',
+                'nobody@localhost'
+            )
+
 
 config = Config()

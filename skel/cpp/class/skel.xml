@@ -8,7 +8,7 @@
     </info>
 
     <params>
-        <param name="classname" value="%CLASSNAME%" />
+        <param name="classname" value="CLASSNAME" />
     </params>
 
     <filelist>
