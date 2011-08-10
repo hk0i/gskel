@@ -58,6 +58,11 @@ class CLIParser(object):
         langs = Languages(os.path.join(sys.path[0], 'skel/language.xml'))
         langs.loadDirectives(os.path.join(sys.path[0], 'skel'))
         skelFile = None
+        if args:
+            if args.v == True:
+                gskel.config.debugModeSet = True
+            log.debug('args: ' + str(args))
+
         if args.directive and args.outpath:
             for lang in langs.languages:
                 log.debug('acquiring skel file for: ' + args.directive)
@@ -71,7 +76,3 @@ class CLIParser(object):
                 project = Project(skel = skeleton, params = args.params)
                 project.createFiles(args.outpath)
 
-        if args:
-            if args.v == True:
-                gskel.config.debugModeSet = True
-            log.debug('args: ' + str(args))
