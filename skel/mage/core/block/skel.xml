@@ -4,12 +4,13 @@
         <author>Gregory McQuillan</author>
         <name>Magento Core Block Text Class</name>
         <language>Magento</language>
-        <directive>code/block/text</directive>
+        <directive>core/block/text</directive>
     </info>
 
     <params>
         <param name="namespace" value="NAMESPACE" />
-        <param name="classname" value="BLOCKNAME" />
+        <param name="modulename" value="MODULENAME" />
+        <param name="blockname" value="BLOCKNAME" />
     </params>
 
     <filelist>

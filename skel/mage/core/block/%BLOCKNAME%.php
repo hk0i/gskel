@@ -4,7 +4,7 @@
  *
  * @author %AUTHOR% <%AUTHOREMAIL%>
  */
-class %NAMESPACE%_CategoryTopProduct_Block_%BLOCKNAME%
+class %NAMESPACE%_%MODULENAME%_Block_%BLOCKNAME%
     extends Mage_Core_Block_Text
 {
     public function _prepareLayout()
