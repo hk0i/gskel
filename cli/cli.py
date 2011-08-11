@@ -67,16 +67,25 @@ class CLIParser(object):
         langs.loadDirectives(os.path.join(sys.path[0], 'skel'))
         skelFile = None
         if args:
-            if args.v == True:
+            if args.verbose == True:
                 gskel.config.debugModeSet = True
             log.debug('args: ' + str(args))
 
         if args.directive and args.outpath:
             for lang in langs.languages:
                 log.debug('acquiring skel file for: ' + args.directive)
-                skelFile = langs.lang(args.lang).getDirective(args.directive)
-                log.debug('skel file found: ' + str(skelFile))
-                break
+                lang = langs.lang(args.lang)
+                if lang:
+                    skelFile = lang.getDirective(args.directive)
+                    log.debug('skel file found: ' + str(skelFile))
+                    break
+                else:
+                    log.error(
+                        'No language definition found for lang `'
+                        + args.lang
+                        + '`'
+                    )
+                    sys.exit(1)
 
             #copy files
             if skelFile:
