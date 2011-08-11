@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<skel>
+    <info>
+        <author>Gregory McQuillan</author>
+        <name>Magento Core Block Text Class</name>
+        <language>Magento</language>
+        <directive>code/block/text</directive>
+    </info>
+
+    <params>
+        <param name="namespace" value="NAMESPACE" />
+        <param name="classname" value="BLOCKNAME" />
+    </params>
+
+    <filelist>
+        <file name="%BLOCKNAME%.php" />
+    </filelist>
+</skel>

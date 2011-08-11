@@ -12,4 +12,8 @@
         <name>Java</name>
         <alias>java</alias>
     </lang>
+    <lang>
+        <name>Magento</name>
+        <alias>mage</alias>
+    </lang>
 </languages>
