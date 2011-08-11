@@ -105,6 +105,9 @@ class Project(object):
                     'Project::createFiles: checking for file: '
                     + sourceFile
                 )
+                if len(self.params) != len(self.skel.params):
+                    log.error('Incorrect number of arguments; aborting...')
+                    sys.exit(1)
                 if os.path.exists(sourceFile):
                     destFile = os.path.join(dest, skelFile)
                     destPath = os.path.abspath(destFile)
