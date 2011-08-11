@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<skel>
+    <info>
+        <author>Gregory McQuillan</author>
+        <name>Magento Helper Class</name>
+        <language>Magento</language>
+        <directive>core/helper</directive>
+    </info>
+
+    <params>
+        <param name="namespace" value="NAMESPACE" />
+        <param name="modulename" value="MODULENAME" />
+    </params>
+
+    <filelist>
+        <file name="Data.php" />
+    </filelist>
+</skel>
