@@ -1,7 +1,10 @@
+import os
+import sys
 from lxml import etree
+
 from logger import log
 from skel import Skel
-import os
+
 
 class Language(object):
     """language object stores a language and all of its directives"""
@@ -35,7 +38,8 @@ class Language(object):
                 if dirname == search:
                     return d[dirname]
 
-        log.debug('Directive `' + search + '` not found in ' + self.name)
+        log.error('Directive `' + search + '` not found in ' + self.name)
+        sys.exit(1)
         return False
 
     def toXml(self):
