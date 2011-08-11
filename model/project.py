@@ -107,6 +107,11 @@ class Project(object):
                 )
                 if len(self.params) != len(self.skel.params):
                     log.error('Incorrect number of arguments; aborting...')
+                    paramlist = list()
+                    for p in self.skel.params:
+                        paramlist.append(p.keys()[0])
+                    log.error('expected: ' + ' '.join(paramlist))
+
                     sys.exit(1)
                 if os.path.exists(sourceFile):
                     destFile = os.path.join(dest, skelFile)
