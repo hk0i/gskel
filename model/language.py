@@ -93,6 +93,18 @@ class Languages(object):
                 lang = self.lang(s.language)
                 if lang:
                     lang.addDirective(s.directive, skelFile)
+    def getDirectory(self):
+        """Retrieves a list of all directives by language"""
+        msg = ''
+        for lang in self.languages:
+            msg += str(lang) + '\n'
+            for dir in lang.directives:
+                k = dir.keys()[0]
+                skel = Skel(dir[k])
+                if skel.name:
+                    msg += '\t' + k + '\t' + str(skel.name) + '\n'
+
+        return msg
 
     def toXml(self):
         """returns xml of languages"""
@@ -133,7 +145,9 @@ if __name__ == '__main__':
         + str(l.lang('cpp').getDirective('proj/cli'))
     )
 
-    log.notice(
-        'Checking for non-existant directive: proj/main in cpp: '
-        + str(l.lang('cpp').getDirective('proj/main'))
-    )
+    # log.notice(
+        # 'Checking for non-existant directive: proj/main in cpp: '
+        # + str(l.lang('cpp').getDirective('proj/main'))
+    # )
+
+    print l.getDirectory()

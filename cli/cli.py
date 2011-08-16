@@ -33,6 +33,13 @@ class CLIParser(object):
         )
 
         parser.add_argument(
+            '-l',
+            '--list',
+            action='store_true',
+            help='list available directives and exit'
+        )
+
+        parser.add_argument(
             '-p',
             '--project-name',
             help='Name of the project',
@@ -70,6 +77,9 @@ class CLIParser(object):
             if args.verbose == True:
                 gskel.config.debugModeSet = True
             log.debug('args: ' + str(args))
+            if args.list:
+                print langs.getDirectory()
+                sys.exit(0)
 
         if args.directive and args.outpath:
             for lang in langs.languages:
