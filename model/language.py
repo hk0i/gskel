@@ -95,14 +95,15 @@ class Languages(object):
                     lang.addDirective(s.directive, skelFile)
     def getDirectory(self):
         """Retrieves a list of all directives by language"""
-        msg = ''
+        msg = 'Lang\tDirective\tDescription\n'
         for lang in self.languages:
-            msg += str(lang) + '\n'
+            msg += str(lang) + ' (' + lang.alias + ')\n'
             for dir in lang.directives:
                 k = dir.keys()[0]
                 skel = Skel(dir[k])
+                dname = '/'.join(k.split('/')[1:])
                 if skel.name:
-                    msg += '\t' + k + '\t' + str(skel.name) + '\n'
+                    msg += '\t' + dname + '\t' + str(skel.name) + '\n'
 
         return msg
 
