@@ -33,8 +33,7 @@ class Language(object):
         if self.directives:
             log.debug('Searching for directive: ' + search)
             for d in self.directives:
-                dirname = d.keys()
-                dirname = dirname[0]
+                dirname = d.keys()[0]
                 if dirname == search:
                     return d[dirname]
 
@@ -104,6 +103,11 @@ class Languages(object):
                 dname = '/'.join(k.split('/')[1:])
                 if skel.name:
                     msg += '\t' + dname + '\t' + str(skel.name) + '\n'
+                    if skel.params:
+                        params = ''
+                        for p in skel.params:
+                            params += p[p.keys()[0]] + ' '
+                        msg += '\targuments: ' + params + '\n\n'
 
         return msg
 
@@ -115,7 +119,7 @@ class Languages(object):
     def lang(self, search):
         """
         returns the Language object with name or alias `search`.
-        returns None if not in self.languages
+        Returns None if not in self.languages
         """
         for lang in self.languages:
             if lang.name == search or lang.alias == search:
