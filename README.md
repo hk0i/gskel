@@ -1,6 +1,6 @@
 GSkel
 ===============================================================================
-gskell is a cli project skeleton tool designed for commandline buffs and people who
+gskel is a cli project skeleton tool designed for commandline buffs and people who
 generally despise using a single IDE application solution for software development.
 
 More info
