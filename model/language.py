@@ -108,14 +108,17 @@ class Languages(object):
             msg += str(lang) + ' (' + lang.alias + ')\n'
             for dir in lang.directives:
                 k = dir.keys()[0]
-                skel = Skel(dir[k])
+                skel = skelfactory.create_skel(dir[k])
                 dname = '/'.join(k.split('/')[1:])
                 if skel.name:
                     msg += '\t' + dname + '\t' + str(skel.name) + '\n'
                     if skel.params:
                         params = ''
                         for p in skel.params:
-                            params += p[p.keys()[0]] + ' '
+                            try:
+                                params += p[p.keys()[0]] + ' '
+                            except:
+                                params += p
                         msg += '\targuments: ' + params + '\n\n'
 
         return msg

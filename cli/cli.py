@@ -76,9 +76,6 @@ class CLIParser(object):
             if args.verbose == True:
                 gskel.config.debugModeSet = True
             log.debug('args: ' + str(args))
-            if args.list:
-                print langs.getDirectory()
-                sys.exit(0)
         ###################################################################
         # i.e., insert new code BELOW THIS LINE
         # ... unless it requires adding new command line args.
@@ -89,6 +86,9 @@ class CLIParser(object):
         #add an arg for each lang name, then pass the directive as an arg to it
         langs = Languages(os.path.join(sys.path[0], 'skel/language.xml'))
         langs.loadDirectives(os.path.join(sys.path[0], 'skel'))
+        if args.list:
+            print langs.getDirectory()
+            sys.exit(0)
         skelFile = None
 
         if args.directive and args.outpath:
