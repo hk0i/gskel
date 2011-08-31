@@ -93,7 +93,8 @@ class CLIParser(object):
 
         if args.directive and args.outpath:
             for lang in langs.languages:
-                log.debug('acquiring skel file for: ' + args.directive)
+                log.debug('acquiring skel file for: ' + args.directive,
+                        self)
                 lang = langs.lang(args.lang)
                 if lang:
                     skelFile = lang.getDirective(args.directive)

@@ -20,7 +20,7 @@ class SkelYaml(Skel):
     def loadFile(self, filename):
         """ docstring for loadFile"""
         if os.path.exists(filename):
-            log.debug('SkelYaml::loadFile: loading file: ' + filename)
+            log.debug('loading file: ' + filename)
             f = file(filename, 'r')
             # temporary storage for yaml information
             skel = yaml.safe_load(f)
@@ -35,7 +35,7 @@ class SkelYaml(Skel):
             self.filelist  = skel['filelist']
         else:
             log.error(
-                'SkelYaml::loadFile: could not load file: "'
+                'could not load file: "'
                 + filename + '" because it does not exist.'
             )
 

@@ -101,7 +101,7 @@ class Project(object):
 
     def createFiles(self, dest):
         """copies all files from the skeleton in the dest dir"""
-        log.debug('Project::createFiles: creating files.')
+        log.debug('creating files.')
         if self.skel:
             for skelFile in self.skel.filelist:
                 #full path to source file
@@ -109,7 +109,7 @@ class Project(object):
                     os.path.dirname(self.skel.filename), skelFile
                 )
                 log.debug(
-                    'Project::createFiles: checking for file: '
+                    'checking for file: '
                     + sourceFile
                 )
                 if len(self.params) != len(self.skel.params):
@@ -151,13 +151,13 @@ class Project(object):
                         )
                 else:
                     log.error(
-                        'Project::createFiles: could not copy file from '
+                        'could not copy file from '
                         + 'skeleton because it does not exist: '
                         + sourceFile
                     )
                     sys.exit(1)
         else:
-            log.debug('Project::createFiles: no skel file set, aborting...')
+            log.debug('no skel file set, aborting...')
 
 if __name__ == '__main__':
     s = Skel()

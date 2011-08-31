@@ -1,6 +1,8 @@
 import sys
 import os
 import datetime
+import inspect
+
 import gskel
 
 class Logger(object):
@@ -53,16 +55,26 @@ class Logger(object):
         msgs = mType.split(']')
         mType = msgs[0]
         if sys.stdout.isatty():
-            print self.currentTime() + \
-                '[' + self.color(color, bold) +  mType + self.RESET + ']' \
+            print(self.currentTime()
+                + '[' + self.color(color, bold) +  mType + self.RESET + ']'
                 + msgs[1]
+            )
         else:
             print msg
 
-    def debug(self, msg):
+    def debug(self, msg, classref = None):
         """prints a debug message only when debug mode is on"""
         if gskel.config.debugModeSet:
-            msg = '[debug] ' + msg
+            stack = inspect.stack()[1]
+            caller = stack[3]
+            if caller != '?':
+                if not classref:
+                    module = os.path.basename(stack[1])
+                else:
+                    module = classref.__class__.__name__
+                debuginfo = '(' + module + ') ' \
+                    + caller + '(): '
+            msg = '[debug] ' + debuginfo + msg
             self.cprint(msg, self.GREEN, True)
 
     def notice(self, msg):
