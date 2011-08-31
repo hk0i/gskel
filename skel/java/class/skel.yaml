@@ -1,0 +1,10 @@
+author: Gregory McQuillan
+name: Java class
+language: Java
+directive: class
+
+params:
+    - 'CLASSNAME'
+
+filelist:
+    - '%CLASSNAME%.java'
