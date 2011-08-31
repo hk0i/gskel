@@ -58,8 +58,15 @@ class Project(object):
             )
             i = 0
             for param in skel.params:
-                pVal = param.keys()[0]
-                pVal = param[pVal]
+                #duck type trial and error:
+                try:
+                    #try to use the Skel class's XML key-value pairs
+                    pVal = param.keys()[0]
+                    pVal = param[pVal]
+                except:
+                    #every other type of Skeleton (non-XML)
+                    pVal = param
+
                 log.debug('param data: ' + pVal)
                 fContent = self.repWord(fContent, pVal, self.params[i])
                 i = i + 1

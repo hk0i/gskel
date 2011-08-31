@@ -6,7 +6,7 @@ from model.logger import log
 from model import gskel
 from model.language import Language, Languages
 from model.project import Project
-from model.skel import Skel
+from model import skelfactory
 
 #gskel cli - commandline interface for gskel
 
@@ -68,11 +68,10 @@ class CLIParser(object):
 
         args = parser.parse_args()
 
-        #find languages and add args for each
-        #add an arg for each lang name, then pass the directive as an arg to it
-        langs = Languages(os.path.join(sys.path[0], 'skel/language.xml'))
-        langs.loadDirectives(os.path.join(sys.path[0], 'skel'))
-        skelFile = None
+        ###################################################################
+        # For the love of god, please make sure debug mode is checked BEFORE
+        # ANYTHING ELSE -- Otherwise certain methods won't get debug output
+        ###################################################################
         if args:
             if args.verbose == True:
                 gskel.config.debugModeSet = True
@@ -80,6 +79,17 @@ class CLIParser(object):
             if args.list:
                 print langs.getDirectory()
                 sys.exit(0)
+        ###################################################################
+        # i.e., insert new code BELOW THIS LINE
+        # ... unless it requires adding new command line args.
+        ###################################################################
+
+
+        #find languages and add args for each
+        #add an arg for each lang name, then pass the directive as an arg to it
+        langs = Languages(os.path.join(sys.path[0], 'skel/language.xml'))
+        langs.loadDirectives(os.path.join(sys.path[0], 'skel'))
+        skelFile = None
 
         if args.directive and args.outpath:
             for lang in langs.languages:
@@ -99,7 +109,7 @@ class CLIParser(object):
 
             #copy files
             if skelFile:
-                skeleton = Skel(skelFile)
+                skeleton = skelfactory.create_skel(skelFile)
                 project = Project(
                     name = args.project_name,
                     skel = skeleton,

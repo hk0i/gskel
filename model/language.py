@@ -4,6 +4,7 @@ from lxml import etree
 
 from logger import log
 from skel import Skel
+from skely import SkelYaml
 
 
 class Language(object):
@@ -77,21 +78,30 @@ class Languages(object):
 
     def loadDirectives(self, directory):
         """loads directives recursively from a directory"""
+        log.debug('loading directives...')
         for path, dirs, files in os.walk(directory):
-            if 'skel.xml' in files:
-                skelFile = os.path.join(path, 'skel.xml')
-                s = Skel(skelFile)
+            if 'skel.xml' in files or 'skel.yaml' in files:
+                if 'skel.xml' in files:
+                    skelFile = os.path.join(path, 'skel.xml')
+                    s = Skel(skelFile)
+
+                elif 'skel.yaml' in files:
+                    skelFile = os.path.join(path, 'skel.yaml')
+                    s = SkelYaml(skelFile)
 
                 log.debug(
                     'Loading directive: '
                     + str(s.directive)
                     + ' into language '
                     + str(s.language)
+                    + ' from file: '
+                    + '"' + skelFile + '"'
                 )
 
                 lang = self.lang(s.language)
                 if lang:
                     lang.addDirective(s.directive, skelFile)
+
     def getDirectory(self):
         """Retrieves a list of all directives by language"""
         msg = 'Lang\tDirective\tDescription\n'
