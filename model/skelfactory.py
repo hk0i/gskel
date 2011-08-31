@@ -2,6 +2,13 @@ from logger import log
 from skely import SkelYaml
 from skel import Skel
 
+#this tuple holds the possible filetypes for a skeleton object, and is used by
+#the language module's loadDirectives method.
+SKEL_TYPES = (
+    'xml',
+    'yaml'
+)
+
 def create_skel(filename):
     """returns appropriate Skel-type object based on file name
 

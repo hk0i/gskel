@@ -2,6 +2,7 @@ import os
 import sys
 from lxml import etree
 
+import skelfactory
 from logger import log
 from skel import Skel
 from skely import SkelYaml
@@ -80,27 +81,25 @@ class Languages(object):
         """loads directives recursively from a directory"""
         log.debug('loading directives...')
         for path, dirs, files in os.walk(directory):
-            if 'skel.xml' in files or 'skel.yaml' in files:
-                if 'skel.xml' in files:
-                    skelFile = os.path.join(path, 'skel.xml')
-                    s = Skel(skelFile)
+            for type_ in skelfactory.SKEL_TYPES:
+                type_ = 'skel.' + type_
+                if type_ in files:
+                    log.debug('found file: ' + type_)
+                    skelFile = os.path.join(path, type_)
+                    s = skelfactory.create_skel(skelFile)
 
-                elif 'skel.yaml' in files:
-                    skelFile = os.path.join(path, 'skel.yaml')
-                    s = SkelYaml(skelFile)
+                    log.debug(
+                        'Loading directive: '
+                        + str(s.directive)
+                        + ' into language '
+                        + str(s.language)
+                        + ' from file: '
+                        + '"' + skelFile + '"'
+                    )
 
-                log.debug(
-                    'Loading directive: '
-                    + str(s.directive)
-                    + ' into language '
-                    + str(s.language)
-                    + ' from file: '
-                    + '"' + skelFile + '"'
-                )
-
-                lang = self.lang(s.language)
-                if lang:
-                    lang.addDirective(s.directive, skelFile)
+                    lang = self.lang(s.language)
+                    if lang:
+                        lang.addDirective(s.directive, skelFile)
 
     def getDirectory(self):
         """Retrieves a list of all directives by language"""

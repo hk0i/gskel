@@ -41,7 +41,15 @@ class SkelYaml(Skel):
 
     def saveFile(self, filename):
         """saves skeleton to a yaml document"""
-        print yaml.dump(self)
+        #temporarily remove the filename attribute so that yaml.dump() won't
+        #output it unnecessarily and give an incorrect filename anyway when
+        #migrating between systems
+        tmpfilename = self.filename
+        del self.filename
+        file_ = open(filename, 'w')
+        file_.write(yaml.dump(self))
+        file_.close()
+        self.filename = tmpfilename
 
 if __name__ == '__main__':
     skel = SkelYaml()
