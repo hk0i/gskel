@@ -4,7 +4,7 @@
         <author>Gregory McQuillan</author>
         <name>C++ Command Line Interface Application</name>
         <language>C++</language>
-        <directive>proj/cli</directive>
+        <directive>cli/main</directive>
     </info>
 
     <filelist>
