@@ -25,7 +25,7 @@ Quick Install Guide
 Instructions on how to set up certain dependencies may differ depending on the
 platform:
 
-OSX
+OS X
 ------------------------------------------------------------------------------
 Grab `libxml2` and `PyYAML` you will need them, along with the python bindings.
 The recommended way to do this is using `pip`.
@@ -43,7 +43,7 @@ script in a local `bin` directory in your path:
     cd gskel
     ln -s gskel ~/bin/.
 
-Assuming `~/bin` is in your parth you should now be able to run gskel on the
+Assuming `~/bin` is in your path you should now be able to run gskel on the
 command line:
 
     $ gskel
