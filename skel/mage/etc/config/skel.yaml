@@ -1,0 +1,11 @@
+author: Gregory McQuillan
+name: Magento Module etc/config.xml
+language: Magento
+directive: etc/config
+
+params:
+    - 'NAMESPACE'
+    - 'MODULENAME'
+
+filelist:
+    - 'app/code/local/%NAMESPACE%/%MODULENAME%/etc/config.xml'

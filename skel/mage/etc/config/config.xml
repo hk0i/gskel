@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <%NAMESPACE%_%MODULENAME%>
+            <version>0.1.0</version>
+        </%NAMESPACE%_%MODULENAME%>
+    </modules>
+
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                       <system>
+                          <children>
+                             <config>
+                                 <children>
+                                     <%MODULENAME%>
+                                        <title>%MODULENAME% Configuration</title>
+                                     </%MODULENAME%>
+                                 </children>
+                            </config>
+                         </children>
+                       </system>
+                   </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+</config>
