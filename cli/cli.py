@@ -10,10 +10,21 @@ from model import skelfactory
 
 #gskel cli - commandline interface for gskel
 
+
 class CLIParser(object):
     """docstring for CLIParser"""
     def __init__(self):
         super(CLIParser, self).__init__()
+
+    def show_directory_and_quit(self):
+        '''
+        hackish way of showing directory for --list and -l
+        '''
+        #this is the only way I came up with to get around the min arg number
+        langs = Languages(os.path.join(sys.path[0], 'skel/language.xml'))
+        langs.load_directives(os.path.join(sys.path[0], 'skel'))
+        print langs.get_directory()
+        sys.exit(0)
 
     def parse(self):
         parser = argparse.ArgumentParser(prog='gskel')
@@ -32,6 +43,10 @@ class CLIParser(object):
             help='verbose mode, show debug output'
         )
 
+        #until I figure out a way to make this option ignore the other required
+        #options this is actually only handled by the show_directory_and_quit
+        #function above. It is included in here soley for the output of
+        #gskel -h
         parser.add_argument(
             '-l',
             '--list',
@@ -65,6 +80,9 @@ class CLIParser(object):
             help='directory to output to, defaults to current directory',
             default='.'
         )
+
+        if len(sys.argv) == 2 and (sys.argv[1] == '-l' or sys.argv[1] == '--list'):
+            self.show_directory_and_quit()
 
         args = parser.parse_args()
 
