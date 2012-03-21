@@ -26,11 +26,11 @@ class Project(object):
         #some default values
         self.constants = [
             {'APPNAME'    : self.project_name},
-            {'AUTHOR'     : gskel.config.authorName},
-            {'AUTHOREMAIL': gskel.config.authorEmail}
+            {'AUTHOR'     : gskel.config.author_name},
+            {'AUTHOREMAIL': gskel.config.author_email}
         ]
 
-    def repWord(self, string, word, rep):
+    def rep_word(self, string, word, rep):
         replacement = str(rep)
         search = '%' + word + '%'
         log.debug(
@@ -48,11 +48,11 @@ class Project(object):
         )
         return ret
 
-    def repVars(self, skel, string):
+    def rep_vars(self, skel, string):
         """replaces variables in file filename according to skel object"""
 
-        fContent = string
-        if skel.hasParams() and self.params:
+        f_content = string
+        if skel.has_params() and self.params:
             log.debug(
                 'Attempting to make variable replacements.'
             )
@@ -61,56 +61,56 @@ class Project(object):
                 #duck type trial and error:
                 try:
                     #try to use the Skel class's XML key-value pairs
-                    pVal = param.keys()[0]
-                    pVal = param[pVal]
+                    p_val = param.keys()[0]
+                    p_val = param[p_val]
                 except:
                     #every other type of Skeleton (non-XML)
-                    pVal = param
+                    p_val = param
 
-                log.debug('param data: ' + pVal)
-                fContent = self.repWord(fContent, pVal, self.params[i])
+                log.debug('param data: ' + p_val)
+                f_content = self.rep_word(f_content, p_val, self.params[i])
                 i = i + 1
 
         log.debug('Replacing constants..')
         for const in self.constants:
             key = const.keys()[0]
             rep= const[key]
-            fContent = self.repWord(fContent, key, rep)
+            f_content = self.rep_word(f_content, key, rep)
 
-        return fContent
+        return f_content
 
-    def repVarsFile(self, skel, filename):
+    def rep_vars_file(self, skel, filename):
         """replaces variables in file filename according to skel object"""
         log.debug(
             'Attempting to make variable replacements in file: '
             + filename
         )
         f = open(filename, 'r')
-        fContent = f.read()
+        f_content = f.read()
         fname = filename
         f.close()
 
         #replace content
-        fContent = self.repVars(skel, fContent)
-        fname = self.repVars(skel, filename)
+        f_content = self.rep_vars(skel, f_content)
+        fname = self.rep_vars(skel, filename)
 
         f = open(filename, 'w')
-        f.write(fContent)
+        f.write(f_content)
         f.close()
         return fname
 
-    def createFiles(self, dest):
+    def create_files(self, dest):
         """copies all files from the skeleton in the dest dir"""
         log.debug('creating files.')
         if self.skel:
-            for skelFile in self.skel.filelist:
+            for skel_file in self.skel.filelist:
                 #full path to source file
-                sourceFile = os.path.join(
-                    os.path.dirname(self.skel.filename), skelFile
+                source_file = os.path.join(
+                    os.path.dirname(self.skel.filename), skel_file
                 )
                 log.debug(
                     'checking for file: '
-                    + sourceFile
+                    + source_file
                 )
                 if len(self.params) != len(self.skel.params):
                     log.error('Incorrect number of arguments; aborting...')
@@ -120,40 +120,40 @@ class Project(object):
                     log.error('expected: ' + ' '.join(paramlist))
 
                     sys.exit(1)
-                if os.path.exists(sourceFile):
-                    destFile = os.path.join(dest, skelFile)
-                    destPath = os.path.abspath(destFile)
-                    destPath = os.path.dirname(destPath)
-                    if not os.path.exists(destPath):
+                if os.path.exists(source_file):
+                    dest_file = os.path.join(dest, skel_file)
+                    dest_path = os.path.abspath(dest_file)
+                    dest_path = os.path.dirname(dest_path)
+                    if not os.path.exists(dest_path):
                         log.notice(
                             'directory does not exist, '
-                           + 'creating: ' + destPath
+                           + 'creating: ' + dest_path
                         )
-                        os.makedirs(destPath)
-                    if not os.path.exists(destFile):
-                        shutil.copyfile(sourceFile, destFile)
-                        renamed = self.repVarsFile(
+                        os.makedirs(dest_path)
+                    if not os.path.exists(dest_file):
+                        shutil.copyfile(source_file, dest_file)
+                        renamed = self.rep_vars_file(
                             self.skel,
-                            destFile
+                            dest_file
                         )
-                        nFile = destFile
-                        if renamed != destFile:
-                            shutil.move(destFile, renamed)
-                            nFile = renamed
+                        n_file = dest_file
+                        if renamed != dest_file:
+                            shutil.move(dest_file, renamed)
+                            n_file = renamed
                         log.notice(
                             'Created file: '
-                            + nFile
+                            + n_file
                         )
                     else:
                         log.warning(
                             'File exists, skipping: '
-                            + skelFile
+                            + skel_file
                         )
                 else:
                     log.error(
                         'could not copy file from '
                         + 'skeleton because it does not exist: '
-                        + sourceFile
+                        + source_file
                     )
                     sys.exit(1)
         else:
@@ -161,7 +161,7 @@ class Project(object):
 
 if __name__ == '__main__':
     s = Skel()
-    s.loadFile('f.xml')
+    s.load_file('f.xml')
 
     p = Project('test_project', s)
-    p.createFiles('test_output')
+    p.create_files('test_output')

@@ -10,15 +10,15 @@ class SkelYaml(Skel):
         super(SkelYaml, self).__init__()
         self.filename = filename
         if filename:
-            self.loadFile(filename)
+            self.load_file(filename)
 
-        del self.infoNodes
+        del self.info_nodes
 
         #this holds a yaml skel object loaded from a file using yaml.load()
         yam = None
 
-    def loadFile(self, filename):
-        """ docstring for loadFile"""
+    def load_file(self, filename):
+        """ docstring for load_file"""
         if os.path.exists(filename):
             log.debug('loading file: ' + filename)
             f = file(filename, 'r')
@@ -39,7 +39,7 @@ class SkelYaml(Skel):
                 + filename + '" because it does not exist.'
             )
 
-    def saveFile(self, filename):
+    def save_file(self, filename):
         """saves skeleton to a yaml document"""
         #temporarily remove the filename attribute so that yaml.dump() won't
         #output it unnecessarily and give an incorrect filename anyway when
@@ -53,5 +53,5 @@ class SkelYaml(Skel):
 
 if __name__ == '__main__':
     skel = SkelYaml()
-    skel.loadFile('skel/java/class/skel.yaml')
-    skel.saveFile('test')
+    skel.load_file('skel/java/class/skel.yaml')
+    skel.save_file('test')

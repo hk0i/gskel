@@ -3,7 +3,7 @@ from skely import SkelYaml
 from skel import Skel
 
 #this tuple holds the possible filetypes for a skeleton object, and is used by
-#the language module's loadDirectives method.
+#the language module's load_directives method.
 SKEL_TYPES = (
     'xml',
     'yaml'

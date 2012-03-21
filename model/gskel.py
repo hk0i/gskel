@@ -13,25 +13,25 @@ class Config(object):
     def __init__(self):
         super(Config, self).__init__()
 
-        self.debugModeSet = False
-        self.authorName  = 'gskel'
-        self.authorEmail = 'nobody@localhost'
+        self.debug_mode_set = False
+        self.author_name  = 'gskel'
+        self.author_email = 'nobody@localhost'
 
         self.config = ConfigParser.SafeConfigParser()
-        configPath = os.path.join(HOME_PATH, '.gskel', 'config')
-        if os.path.exists(configPath):
-            self.loadConfig(configPath)
+        config_path = os.path.join(HOME_PATH, '.gskel', 'config')
+        if os.path.exists(config_path):
+            self.load_config(config_path)
 
-    def loadConfig(self, configPath):
+    def load_config(self, config_path):
         """loads configuration into model from an existing config file"""
-        self.config.readfp(open(configPath, 'r'))
+        self.config.readfp(open(config_path, 'r'))
         if self.config.has_section('debug'):
-            self.debugModeSet = self.config.getboolean('debug', 'enabled')
+            self.debug_mode_set = self.config.getboolean('debug', 'enabled')
 
         #default author info
         if self.config.has_section('author'):
-            self.authorName   = self.config.get('author', 'name', 'gskel')
-            self.authorEmail  = self.config.get(
+            self.author_name   = self.config.get('author', 'name', 'gskel')
+            self.author_email  = self.config.get(
                 'author',
                 'email',
                 'nobody@localhost'

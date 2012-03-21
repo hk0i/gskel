@@ -74,7 +74,7 @@ class CLIParser(object):
         ###################################################################
         if args:
             if args.verbose == True:
-                gskel.config.debugModeSet = True
+                gskel.config.debug_mode_set = True
             log.debug('args: ' + str(args))
         ###################################################################
         # i.e., insert new code BELOW THIS LINE
@@ -85,11 +85,11 @@ class CLIParser(object):
         #find languages and add args for each
         #add an arg for each lang name, then pass the directive as an arg to it
         langs = Languages(os.path.join(sys.path[0], 'skel/language.xml'))
-        langs.loadDirectives(os.path.join(sys.path[0], 'skel'))
+        langs.load_directives(os.path.join(sys.path[0], 'skel'))
         if args.list:
-            print langs.getDirectory()
+            print langs.get_directory()
             sys.exit(0)
-        skelFile = None
+        skel_file = None
 
         if args.directive and args.outpath:
             for lang in langs.languages:
@@ -97,8 +97,8 @@ class CLIParser(object):
                         self)
                 lang = langs.lang(args.lang)
                 if lang:
-                    skelFile = lang.getDirective(args.directive)
-                    log.debug('skel file found: ' + str(skelFile))
+                    skel_file = lang.get_directive(args.directive)
+                    log.debug('skel file found: ' + str(skel_file))
                     break
                 else:
                     log.error(
@@ -109,12 +109,12 @@ class CLIParser(object):
                     sys.exit(1)
 
             #copy files
-            if skelFile:
-                skeleton = skelfactory.create_skel(skelFile)
+            if skel_file:
+                skeleton = skelfactory.create_skel(skel_file)
                 project = Project(
                     name = args.project_name,
                     skel = skeleton,
                     params = args.params
                 )
-                project.createFiles(args.outpath)
+                project.create_files(args.outpath)
 

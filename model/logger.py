@@ -24,7 +24,7 @@ class Logger(object):
 
         #attributes
         self.logfile = logfile
-        self.useTime = False
+        self.use_time = False
 
     def color(self, color, bold = False):
         """returns a color based on the input"""
@@ -34,16 +34,16 @@ class Logger(object):
             bold = 0
         return '\033[' + str(bold) + ';' + str(color) + 'm'
 
-    def setTime(self, value = True):
+    def set_time(self, value = True):
         """enables or disables timestamps"""
-        self.useTime = value
+        self.use_time = value
 
-    def currentTime(self):
+    def current_time(self):
         """
         returns the current time in a standard format and a trailing space
         """
         now = datetime.datetime.now()
-        if self.useTime == True:
+        if self.use_time == True:
             return now.strftime('%Y.%m.%d %H:%M:%S ')
         else:
             return ''
@@ -51,12 +51,12 @@ class Logger(object):
     def cprint(self, msg, color, bold = False):
         """prints a message in color"""
         msgs = msg.split('[')
-        mType = msgs[1]
-        msgs = mType.split(']')
-        mType = msgs[0]
+        m_type = msgs[1]
+        msgs = m_type.split(']')
+        m_type = msgs[0]
         if sys.stdout.isatty():
-            print(self.currentTime()
-                + '[' + self.color(color, bold) +  mType + self.RESET + ']'
+            print(self.current_time()
+                + '[' + self.color(color, bold) +  m_type + self.RESET + ']'
                 + msgs[1]
             )
         else:
@@ -64,7 +64,7 @@ class Logger(object):
 
     def debug(self, msg, classref = None):
         """prints a debug message only when debug mode is on"""
-        if gskel.config.debugModeSet:
+        if gskel.config.debug_mode_set:
             stack = inspect.stack()[1]
             caller = stack[3]
             if caller != '?':
@@ -97,6 +97,6 @@ log = Logger()
 if __name__ == '__main__':
     l = Logger()
     l.notice('notice')
-    l.setTime()
+    l.set_time()
     l.warning('warning')
     l.error('error')

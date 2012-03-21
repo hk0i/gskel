@@ -12,7 +12,7 @@ class Skel(object):
 
         #these nodes all become attributes of the Skel class
         #this list defines the attribute : xpath to node text data
-        self.infoNodes = [
+        self.info_nodes = [
             {'name'      : '/skel/info/name' },
             {'author'    : '/skel/info/author'},
             {'language'  : '/skel/info/language'},
@@ -23,29 +23,29 @@ class Skel(object):
         self.params = list()
 
         #initialize the attributes to None
-        for node in self.infoNodes:
+        for node in self.info_nodes:
             keys = node.keys()
-            attrName = keys[0]
-            self.__dict__[attrName] = None
+            attr_name = keys[0]
+            self.__dict__[attr_name] = None
 
         if filename:
-            self.loadFile(filename)
+            self.load_file(filename)
 
-    def addFile(self, filename):
+    def add_file(self, filename):
         """adds a file to the filelist"""
         self.filelist.append(filename)
 
-    def removeFile(self, filename):
+    def remove_file(self, filename):
         """removes a file from the filelist"""
         self.filelist.remove(filename)
 
-    def hasParams(self):
+    def has_params(self):
         """returns True if this skeleton has extra parameters or not"""
         if self.params:
             return True
         return False
 
-    def loadFile(self, filename):
+    def load_file(self, filename):
         """loads skeleton information from file"""
         if os.path.exists(filename):
             log.debug('loading file: ' + filename)
@@ -55,13 +55,13 @@ class Skel(object):
                 tree = etree.parse(filename)
                 skel = tree.getroot()
 
-                for node in self.infoNodes:
+                for node in self.info_nodes:
                     keys = node.keys()
-                    attrName = keys[0]
-                    attrPath = node[attrName]
-                    nodeData = tree.xpath(attrPath)
-                    if nodeData:
-                        self.__dict__[attrName] = nodeData[0].text
+                    attr_name = keys[0]
+                    attr_path = node[attr_name]
+                    node_data = tree.xpath(attr_path)
+                    if node_data:
+                        self.__dict__[attr_name] = node_data[0].text
 
                 #get file list
                 filelist = tree.xpath('/skel/filelist/file')
@@ -86,7 +86,7 @@ class Skel(object):
             log.error('File does not exist: ' + filename)
             return False
 
-    def toXml(self):
+    def to_xml(self):
         """returns xml representation of the object"""
         #root skel node ###################################################
         skel = etree.Element('skel')
@@ -96,20 +96,20 @@ class Skel(object):
         skel.append(info)
 
         #info data ########################################################
-        for node in self.infoNodes:
+        for node in self.info_nodes:
             keys = node.keys()
-            attrName = keys[0]
-            xmlNode = etree.SubElement(info, attrName)
-            xmlNode.text = self.__dict__[attrName]
+            attr_name = keys[0]
+            xml_node = etree.SubElement(info, attr_name)
+            xml_node.text = self.__dict__[attr_name]
 
         #parameters #######################################################
         params = etree.SubElement(skel, 'params')
 
         for param in self.params:
-            paramName = param.keys()[0]
-            xmlNode = etree.SubElement(params, 'param')
-            xmlNode.set('name', paramName)
-            xmlNode.set('value', param[paramName])
+            param_name = param.keys()[0]
+            xml_node = etree.SubElement(params, 'param')
+            xml_node.set('name', param_name)
+            xml_node.set('value', param[param_name])
 
         #filelist #########################################################
         filelist = etree.SubElement(skel, 'filelist')
@@ -128,14 +128,14 @@ class Skel(object):
 
         return xml
 
-    def getXml(self):
-        """wrapper function for toXml, returns object as xml"""
-        return self.toXml()
+    def get_xml(self):
+        """wrapper function for to_xml, returns object as xml"""
+        return self.to_xml()
 
-    def saveFile(self, filename):
+    def save_file(self, filename):
         """Save file"""
 
-        xml = self.getXml()
+        xml = self.get_xml()
 
         #write to file
         f = open(filename, 'w')
@@ -148,28 +148,28 @@ if __name__ == "__main__":
     log.notice('Creating test object...')
     ts = Skel()
     log.notice('Attempting to open a file that does not exist...')
-    ts.loadFile('this-does-not-exist.xml')
+    ts.load_file('this-does-not-exist.xml')
     ts.name = 'sample file'
     ts.author = 'sample author'
     ts.directive  = 'samp'
     ts.language = 'C++'
-    ts.addFile('main.cpp')
-    ts.addFile('this should not appear')
-    ts.removeFile('this should not appear')
+    ts.add_file('main.cpp')
+    ts.add_file('this should not appear')
+    ts.remove_file('this should not appear')
     log.notice('Writing test object to file f.xml...')
-    ts.saveFile('f.xml')
+    ts.save_file('f.xml')
 
     log.notice('Loading test file...')
     tl = Skel()
-    tl.loadFile('skel/cpp/cli/skel.xml')
-    print tl.getXml()
+    tl.load_file('skel/cpp/cli/skel.xml')
+    print tl.get_xml()
 
     log.notice('Loading f.xml')
     tl2 = Skel()
-    tl2.loadFile('f.xml')
-    print tl2.getXml()
+    tl2.load_file('f.xml')
+    print tl2.get_xml()
 
     log.notice('loading test skel with replacement vars...')
     tl3 = Skel('skel/java/main-class/skel.xml')
-    print tl3.getXml()
+    print tl3.get_xml()
 
