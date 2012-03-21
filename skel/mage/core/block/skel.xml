@@ -14,6 +14,6 @@
     </params>
 
     <filelist>
-        <file name="%BLOCKNAME%.php" />
+        <file name="app/code/local/%NAMESPACE%/%MODULENAME%/Block/%BLOCKNAME%.php" />
     </filelist>
 </skel>

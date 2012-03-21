@@ -49,7 +49,7 @@ class Project(object):
         return ret
 
     def rep_vars(self, skel, string):
-        """replaces variables in file filename according to skel object"""
+        """replaces variables in a string according to skel object"""
 
         f_content = string
         if skel.has_params() and self.params:
@@ -106,7 +106,8 @@ class Project(object):
             for skel_file in self.skel.filelist:
                 #full path to source file
                 source_file = os.path.join(
-                    os.path.dirname(self.skel.filename), skel_file
+                    os.path.dirname(self.skel.filename),
+                    os.path.basename(skel_file)
                 )
                 log.debug(
                     'checking for file: '
@@ -121,7 +122,10 @@ class Project(object):
 
                     sys.exit(1)
                 if os.path.exists(source_file):
-                    dest_file = os.path.join(dest, skel_file)
+                    dest_file = os.path.join(
+                        dest,
+                        self.rep_vars(self.skel, skel_file)
+                    )
                     dest_path = os.path.abspath(dest_file)
                     dest_path = os.path.dirname(dest_path)
                     if not os.path.exists(dest_path):

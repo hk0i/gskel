@@ -13,6 +13,6 @@
     </params>
 
     <filelist>
-        <file name="Data.php" />
+        <file name="app/code/local/%NAMESPACE%/%MODULENAME%/Helper/Data.php" />
     </filelist>
 </skel>
