@@ -118,7 +118,7 @@ class Languages(object):
                             try:
                                 params += p[p.keys()[0]] + ' '
                             except:
-                                params += p
+                                params += p + ' '
                         msg += '\targuments: ' + params + '\n\n'
 
         return msg
