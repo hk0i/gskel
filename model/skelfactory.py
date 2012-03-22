@@ -6,7 +6,8 @@ from skel import Skel
 #the language module's load_directives method.
 SKEL_TYPES = (
     'xml',
-    'yaml'
+    'yaml',
+    'yml'
 )
 
 def create_skel(filename):
@@ -18,7 +19,7 @@ def create_skel(filename):
 
     """
     log.debug('create_skel: Attempting to create new skeleton')
-    if filename[-4:] == 'yaml':
+    if filename[-4:] == 'yaml' or filename[-3:] == 'yml':
         log.debug('create_skel: Creating new yaml skeleton from file: ' + filename)
         return SkelYaml(filename)
 
