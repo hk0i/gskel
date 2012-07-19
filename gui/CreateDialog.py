@@ -4,58 +4,98 @@ import sys
 from PySide.QtCore import *
 from PySide.QtGui import *
 
-# from model.logger import log
-# from model import gskel
-# from model.language import Language, Languages
-# from model.project import Project
-# from model import skelfactory
+from model.logger import log
+from model import gskel
+from model.language import Language, Languages
+from model.project import Project
+from model import skelfactory
 
 class CreateDialog(QDialog):
     """docstring for CreateDialog"""
-    def __init__(self, args, parent = None):
+    def __init__(self, skel, parent = None):
         super(CreateDialog, self).__init__(parent)
 
+        self.skel = skel
+        args = skel.params
         if args and len(args) > 0:
-            textfields = []
-            layout = QVBoxLayout()
-            self.txtOutput = QLineEdit(self.tr('File Path...'))
-            self.tbOutput  = QPushButton(self.tr('...'))
+            #if out skeleton requires parameters, set up the ui accordingly
 
-            hboxOutput = QHBoxLayout()
-            hboxOutput.addWidget(self.txtOutput)
-            hboxOutput.addWidget(self.tbOutput)
-            layout.addItem(hboxOutput)
+            self.set_up_param_widgets(args)
 
-            for arg in args:
-                print 'arg:', arg
+            # self.setWindowFlags(Qt.WindowStaysOnTopHint)
+            self.show()
+            self.raise_()
+        else:
+            #otherwise just get the output file name and generate
+            output_file = QFileDialog.getSaveFileName(
+                self,
+                self.tr('Save as...')
+            )
 
-                #well, if it .keys() like a dict...
-                try:
-                    param = arg.keys()[0]
-                except AttributeError:
-                    param = arg
+            self.create_project(output_file[0])
 
-                le = QLineEdit(param, self)
-                textfields.append(le)
-                layout.addWidget(le)
-            layout.addStretch()
-            self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok |
-                    QDialogButtonBox.Cancel)
-            layout.addWidget(self.buttonBox)
+    def set_up_param_widgets(self, args):
+        """Sets up UI widgets for gskel param input"""
+        self.textfields = []
+        layout = QVBoxLayout()
+        self.txtOutput = QLineEdit(self.tr('File Path...'))
+        self.tbOutput  = QPushButton(self.tr('...'))
 
-            self.setLayout(layout)
-            # textfields[0].setSelection(0, len(textfields[0].text()))
+        hboxOutput = QHBoxLayout()
+        hboxOutput.addWidget(self.txtOutput)
+        hboxOutput.addWidget(self.tbOutput)
+        layout.addItem(hboxOutput)
 
-            #set up connections
-            self.tbOutput.clicked.connect(self.save_as)
-            self.buttonBox.accepted.connect(self.accepted)
-            self.buttonBox.rejected.connect(self.rejected)
+        for arg in args:
 
-        self.resize(200, 200)
+            #well, if it .keys() like a dict...
+            try:
+                param = arg.keys()[0]
+            except AttributeError:
+                param = arg
+
+            le = QLineEdit(param, self)
+            self.textfields.append(le)
+            layout.addWidget(le)
+
+        layout.addStretch()
+        self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok |
+                QDialogButtonBox.Cancel)
+        layout.addWidget(self.buttonBox)
+
+        self.setLayout(layout)
+        # textfields[0].setSelection(0, len(textfields[0].text()))
+
+        #set up connections
+        self.tbOutput.clicked.connect(self.save_as)
+        self.buttonBox.accepted.connect(self.accepted)
+        self.buttonBox.rejected.connect(self.rejected)
+
+        # self.show()
+        # self.raise_()
+
+    def widgets_to_params(self):
+        """Takes all params from widgets and throws it into a list"""
+        args = []
+        for textfield in self.textfields:
+            args.append(textfield.text())
+
+        return args
+
+    def create_project(self, output_path, args = []):
+        """creates the project files"""
+        project = Project(
+            name = 'Default Project',
+            skel = self.skel,
+            params = args
+        )
+
+        project.create_files(output_path)
 
     @Slot()
     def accepted(self):
         """ok clicked"""
+        self.create_project(self.txtOutput.text(), self.widgets_to_params())
         self.close()
 
     @Slot()

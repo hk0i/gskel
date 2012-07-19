@@ -33,33 +33,11 @@ class MenuListener(QObject):
                 skel = skelfactory.create_skel(directive[k])
                 if skel.name == directiveName:
                     createDialog = CreateDialog(
-                        skel.params,
+                        skel,
                         parent = self.parent()
                     )
-                    createDialog.show()
-                    # self.parent().show()
-                    # project = Project(
-                        # name = 'Default Project',
-                        # skel = skel,
-                        # params = None
-                    # )
-                    for param in skel.params:
-                        print param
-                    # project.create_files(output_file)
-
-                    print 'Okay!', directive
+                    createDialog.setWindowTitle('[gskel] New ' + directiveName + '...')
                     break
-
-    def closeEvent(self, event):
-        """Stop exiting when we close the dialog"""
-
-        print 'Close event!!! CreateDialog!!!'
-        self.reject()
-        event.ignore()
-
-
-
-        print directiveName, self.parent().langs
 
 class ProjectMenu(QWidget):
     """Main menu for working with gskel projects"""
