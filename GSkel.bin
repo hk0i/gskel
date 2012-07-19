@@ -1,0 +1,16 @@
+#!/usr/bin/python
+
+import sys
+
+from PySide.QtCore import *
+from PySide.QtGui import *
+
+from gui.ProjectMenu import *
+
+if __name__ == '__main__':
+    qapp = QApplication(sys.argv)
+    #shut this off cause we're running a tray app here!
+    qapp.setQuitOnLastWindowClosed(False)
+    pmnu = ProjectMenu()
+    sys.exit(qapp.exec_())
+
