@@ -2,7 +2,7 @@
 <skel>
     <info>
         <author>Gregory McQuillan</author>
-        <name>C++ class with main method</name>
+        <name>C++ class</name>
         <language>C++</language>
         <directive>class</directive>
     </info>
