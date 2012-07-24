@@ -17,12 +17,15 @@ class CreateDialog(QDialog):
 
         self.skel = skel
         args = skel.params
+
         if args and len(args) > 0:
             #if out skeleton requires parameters, set up the ui accordingly
 
             self.set_up_param_widgets(args)
 
             # self.setWindowFlags(Qt.WindowStaysOnTopHint)
+            self.resize(400, 150)
+            self.setMinimumWidth(300)
             self.show()
             self.raise_()
         else:
@@ -32,11 +35,16 @@ class CreateDialog(QDialog):
                 self.tr('Save as...')
             )
 
-            self.create_project(output_file[0])
+            if output_file[0]:
+                self.create_project(output_file[0])
 
     def set_up_param_widgets(self, args):
         """Sets up UI widgets for gskel param input"""
         self.textfields = []
+        formParams = QFormLayout()
+        formParams.setHorizontalSpacing(15)
+        formParams.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
+
         layout = QVBoxLayout()
         self.txtOutput = QLineEdit(self.tr('File Path...'))
         self.tbOutput  = QPushButton(self.tr('...'))
@@ -44,7 +52,7 @@ class CreateDialog(QDialog):
         hboxOutput = QHBoxLayout()
         hboxOutput.addWidget(self.txtOutput)
         hboxOutput.addWidget(self.tbOutput)
-        layout.addItem(hboxOutput)
+        formParams.addRow(QLabel(self.tr('Output path')), hboxOutput)
 
         for arg in args:
 
@@ -54,9 +62,14 @@ class CreateDialog(QDialog):
             except AttributeError:
                 param = arg
 
+            label = QLabel(param.lower())
             le = QLineEdit(param, self)
+            # le.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
             self.textfields.append(le)
-            layout.addWidget(le)
+
+            formParams.addRow(label, le)
+
+        layout.addItem(formParams)
 
         layout.addStretch()
         self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok |
@@ -91,6 +104,10 @@ class CreateDialog(QDialog):
         )
 
         project.create_files(output_path)
+        self.parent().trayIcon.showMessage(
+            self.tr('qgskel'),
+            self.tr('Files created')
+        )
 
     @Slot()
     def accepted(self):
@@ -108,7 +125,8 @@ class CreateDialog(QDialog):
         """Open save file dialog"""
         directory = QFileDialog.getExistingDirectory(
             self,
-            self.tr('Select output path')
+            self.tr('Select output path'),
+            options = QFileDialog.ShowDirsOnly
         )
 
         if directory:
