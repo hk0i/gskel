@@ -4,13 +4,14 @@ import sys
 from PySide.QtCore import *
 from PySide.QtGui import *
 
-from model.logger import *
+from model import logger
 from model import gskel
 from model.language import Language, Languages
 from model.project import Project
 from model import skelfactory
 
 from gui.CreateDialog import *
+from gui.TrayPrinter import *
 
 VERSION = '1.0b'
 
@@ -46,10 +47,10 @@ class ProjectMenu(QWidget):
     def __init__(self, parent = None):
         super(ProjectMenu, self).__init__(parent)
 
-        log.debug('Initializing tray icon...')
+        self.trayIcon = QSystemTrayIcon()
+
         self.menuListener = MenuListener(self)
 
-        self.trayIcon = QSystemTrayIcon()
         self.icon = QIcon('/Users/gmcquillan/apps/gskel/Skull_256.png')
         self.setWindowIcon(self.icon)
         self.trayIcon.setIcon(self.icon)
@@ -59,6 +60,8 @@ class ProjectMenu(QWidget):
 
         self.trayIcon.show()
 
+        logger.log = logger.Logger(printer = TrayPrinter(self.trayIcon))
+        logger.log.notice('Test error!')
     def create_menu_actions(self):
         """ creates actions for menus """
 
@@ -107,6 +110,7 @@ class ProjectMenu(QWidget):
 
     def create_menu(self):
         """ creates systray icon """
+
         log.debug('Initializing tray icon menu...')
         self.create_menu_actions()
 

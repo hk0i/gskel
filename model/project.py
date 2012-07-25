@@ -21,7 +21,7 @@ class Project(object):
                 + self.skel.directive
                 + '` requires arguments; exiting...'
             )
-            sys.exit(1)
+            # sys.exit(1)
 
         #some default values
         self.constants = [
@@ -120,7 +120,7 @@ class Project(object):
                         paramlist.append(p.keys()[0])
                     log.error('expected: ' + ' '.join(paramlist))
 
-                    sys.exit(1)
+                    # sys.exit(1)
                 if os.path.exists(source_file):
                     dest_file = os.path.join(
                         dest,
@@ -159,7 +159,7 @@ class Project(object):
                         + 'skeleton because it does not exist: '
                         + source_file
                     )
-                    sys.exit(1)
+                    # sys.exit(1)
         else:
             log.debug('no skel file set, aborting...')
 

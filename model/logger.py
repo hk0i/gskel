@@ -5,26 +5,25 @@ import inspect
 
 import gskel
 
+from model import printerfactory
+from model import gsprinter
+
 class Logger(object):
     """logs to stdout and/or log files"""
-    def __init__(self, logfile = None):
+    def __init__(self, logfile = None, printer = None):
         super(Logger, self).__init__()
 
         #constants
-        self.GRAY      = 30
-        self.GREY      = 30
-        self.RED       = 31
         self.GREEN     = 32
-        self.YELLOW    = 33
-        self.BLUE      = 34
-        self.MAGENTA   = 35
-        self.CYAN      = 36
-        self.WHITE     = 37
-        self.RESET     = '\033[1;m'
+        self.RESET     = '\033[0;m'
 
         #attributes
         self.logfile = logfile
         self.use_time = False
+        if not printer:
+            self.printer = printerfactory.create_printer()
+        else:
+            self.printer = printer
 
     def color(self, color, bold = False):
         """returns a color based on the input"""
@@ -54,13 +53,15 @@ class Logger(object):
         m_type = msgs[1]
         msgs = m_type.split(']')
         m_type = msgs[0]
-        if sys.stdout.isatty():
-            print(self.current_time()
-                + '[' + self.color(color, bold) +  m_type + self.RESET + ']'
-                + msgs[1]
-            )
-        else:
-            print msg
+        # if sys.stdout.isatty():
+            # print(self.current_time()
+                # + '[' + self.color(color, bold) +  m_type + self.RESET + ']'
+                # + msgs[1]
+            # )
+        # else:
+            # print msg
+
+        self.printer.output(msgs[1], m_type)
 
     def debug(self, msg, classref = None):
         """prints a debug message only when debug mode is on"""
@@ -79,18 +80,14 @@ class Logger(object):
 
     def notice(self, msg):
         """docstring for notice"""
-        msg = '[notice] ' + msg
-        self.cprint(msg, self.BLUE, True)
+        self.printer.output(msg, self.printer.NoticeIcon)
 
     def warning(self, msg):
         """prints a warning"""
-        msg = '[warning] ' + msg
-        self.cprint(msg, self.YELLOW, True)
+        self.printer.output(msg, self.printer.WarningIcon)
 
     def error(self, msg):
-        msg = '[error] ' + msg
-        """prints an error message"""
-        self.cprint(msg, self.RED, True)
+        self.printer.output(msg, self.printer.ErrorIcon)
 
 log = Logger()
 
